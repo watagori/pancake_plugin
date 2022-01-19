@@ -5,21 +5,37 @@ from src.pancake_plugin import PancakePlugin
 
 
 class TestPancakePlugin(unittest.TestCase):
-    # def test_can_handle_01(self):
-    #     file_name = "exchange_bnb_to_cake"
-    #     file_header = open("test/testdata/header.json",
-    #                        "r", encoding="utf-8")
-    #     header = json.load(file_header)
-    #     file_header.close()
+    def test_can_handle_00(self):
+        file_name = "exchange_bnb_to_cake"
+        file_header = open("test/testdata/header.json",
+                           "r", encoding="utf-8")
+        header = json.load(file_header)
+        file_header.close()
 
-    #     file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
-    #                         "r", encoding="utf-8")
-    #     receipt = json.load(file_receipt)
-    #     file_receipt.close()
-    #     transaction = BscTransaction(
-    #         header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
-    #     swap_type = PancakePlugin.can_handle(transaction)
-    #     assert swap_type
+        file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
+                            "r", encoding="utf-8")
+        receipt = json.load(file_receipt)
+        file_receipt.close()
+        transaction = BscTransaction(
+            header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
+        swap_type = PancakePlugin.can_handle(transaction)
+        assert swap_type
+
+    def test_can_handle_00_2(self):
+        file_name = "approve"
+        file_header = open("test/testdata/header.json",
+                           "r", encoding="utf-8")
+        header = json.load(file_header)
+        file_header.close()
+
+        file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
+                            "r", encoding="utf-8")
+        receipt = json.load(file_receipt)
+        file_receipt.close()
+        transaction = BscTransaction(
+            header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
+        swap_type = PancakePlugin.can_handle(transaction)
+        assert swap_type is False
 
     def test_get_caajs_01(self):
         file_name = "exchange_bnb_to_cake"
@@ -217,7 +233,8 @@ class TestPancakePlugin(unittest.TestCase):
             "platform": "bnb_pancakeswap",
             "transaction_id": "0xdc70901bcb2517a885e41ab9ccb0a739ae73af4b8862a1c46f9ca2ce583b8cd3",
             "debit_title": "SPOT",
-            "debit_amount": {"BNB": "0.497740943162833803", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82":
+            "debit_amount": {"BNB": "0.497740943162833803",
+                             "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82":
                              "21.5721707333114908"},
             "debit_from": "0x10ED43C718714eb63d5aA57B78B54704E256024E",
             "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
@@ -269,21 +286,21 @@ class TestPancakePlugin(unittest.TestCase):
         assert caaj[0]['credit_title'] == caaj_main_model['credit_title']
         assert caaj[0]['credit_amount'] == caaj_main_model['credit_amount']
 
-    # def test_get_caajs_04(self):
-    #     file_name = "transaction_fail"
-    #     file_header = open("test/testdata/header.json",
-    #                        "r", encoding="utf-8")
-    #     header = json.load(file_header)
-    #     file_header.close()
+    def test_get_caajs_04(self):
+        file_name = "transaction_fail"
+        file_header = open("test/testdata/header.json",
+                           "r", encoding="utf-8")
+        header = json.load(file_header)
+        file_header.close()
 
-    #     file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
-    #                         "r", encoding="utf-8")
-    #     receipt = json.load(file_receipt)
-    #     file_receipt.close()
-    #     transaction = BscTransaction(
-    #         header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
-    #     caaj = PancakePlugin.get_caajs(transaction)
-    #     assert caaj is None
+        file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
+                            "r", encoding="utf-8")
+        receipt = json.load(file_receipt)
+        file_receipt.close()
+        transaction = BscTransaction(
+            header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
+        caaj = PancakePlugin.get_caajs(transaction)
+        assert caaj is None
 
     # def test_get_caajs_05(self):
     #     file_name = "stake_cake_bnb"
@@ -315,35 +332,144 @@ class TestPancakePlugin(unittest.TestCase):
     #     }
     #     assert caaj[0] == caaj_main_model
 
-    # def test_get_caajs_06(self):
-    #     file_name = "unstake_cake_bnb"
-    #     file_header = open("test/testdata/header.json",
-    #                        "r", encoding="utf-8")
-    #     header = json.load(file_header)
-    #     file_header.close()
+    def test_get_caajs_06(self):
+        file_name = "unstake_cake_bnb"
+        file_header = open("test/testdata/header.json",
+                           "r", encoding="utf-8")
+        header = json.load(file_header)
+        file_header.close()
 
-    #     file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
-    #                         "r", encoding="utf-8")
-    #     receipt = json.load(file_receipt)
-    #     file_receipt.close()
-    #     transaction = BscTransaction(
-    #         header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
-    #     caaj = PancakePlugin.get_caajs(transaction)
-    #     caaj_main_model = {
-    #         "time": "2021-12-28 01:28:52",
-    #         "platform": "bnb_pancakeswap",
-    #         "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
-    #         "debit_title": "STAKING",
-    #         "debit_amount": {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0": "0.291597195540468368"},
-    #         "debit_from": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
-    #         "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
-    #         "credit_title": "SPOT",
-    #         "credit_amount": {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0": "0.291597195540468368"},
-    #         "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
-    #         "credit_to": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
-    #         "comment": "pancakeswap unstake"
-    #     }
-    #     assert caaj[0] == caaj_main_model
+        file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
+                            "r", encoding="utf-8")
+        receipt = json.load(file_receipt)
+        file_receipt.close()
+        transaction = BscTransaction(
+            header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
+        caaj = PancakePlugin.get_caajs(transaction)
+        caaj_main_model = {
+            "time": "2021-12-28 01:28:52",
+            "platform": "bnb_pancakeswap",
+            "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
+            "debit_title": "SPOT",
+            "debit_amount": {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0": "0.291597195540468368"},
+            "debit_from": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
+            "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_title": "STAKIN",
+            "credit_amount":  {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0":
+                               "0.291597195540468368"},
+            "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_to": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
+            "comment": "pancakeswap unstake"
+        }
+        assert caaj[0]['debit_title'] == caaj_main_model['debit_title']
+        assert caaj[0]['debit_amount'] == caaj_main_model['debit_amount']
+        assert caaj[0]['debit_from'] == caaj_main_model['debit_from']
+        assert caaj[0]['debit_to'] == caaj_main_model['debit_to']
+
+    def test_get_caajs_06_2(self):
+        file_name = "unstake_cake_bnb"
+        file_header = open("test/testdata/header.json",
+                           "r", encoding="utf-8")
+        header = json.load(file_header)
+        file_header.close()
+
+        file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
+                            "r", encoding="utf-8")
+        receipt = json.load(file_receipt)
+        file_receipt.close()
+        transaction = BscTransaction(
+            header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
+        caaj = PancakePlugin.get_caajs(transaction)
+        caaj_main_model = {
+            "time": "2021-12-28 01:28:52",
+            "platform": "bnb_pancakeswap",
+            "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
+            "debit_title": "SPOT",
+            "debit_amount": {"0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82": "0.000001921276476768"},
+            "debit_from": "0x009cF7bC57584b7998236eff51b98A168DceA9B0",
+            "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_title": "STAKINGREWARD",
+            "credit_amount":  {"0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82":
+                               "0.000001921276476768"},
+            "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_to": "0x009cF7bC57584b7998236eff51b98A168DceA9B0",
+            "comment": "pancakeswap unstake"
+        }
+        assert caaj[2]['debit_title'] == caaj_main_model['debit_title']
+        assert caaj[2]['debit_amount'] == caaj_main_model['debit_amount']
+        assert caaj[2]['debit_from'] == caaj_main_model['debit_from']
+        assert caaj[2]['debit_to'] == caaj_main_model['debit_to']
+        assert caaj[2]['credit_title'] == caaj_main_model['credit_title']
+
+    def test_get_caajs_07(self):
+        file_name = "stake_cake_bnb"
+        file_header = open("test/testdata/header.json",
+                           "r", encoding="utf-8")
+        header = json.load(file_header)
+        file_header.close()
+
+        file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
+                            "r", encoding="utf-8")
+        receipt = json.load(file_receipt)
+        file_receipt.close()
+        transaction = BscTransaction(
+            header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
+        caaj = PancakePlugin.get_caajs(transaction)
+        caaj_main_model = {
+            "time": "2021-12-28 01:28:52",
+            "platform": "bnb_pancakeswap",
+            "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
+            "debit_title": "SPOT",
+            "debit_amount": {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0": "0.291597195540468368"},
+            "debit_from": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
+            "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_title": "STAKING",
+            "credit_amount":  {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0":
+                               "0.291597195540468368"},
+            "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_to": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
+            "comment": "pancakeswap stake"
+        }
+        assert caaj[0]['debit_title'] == caaj_main_model['debit_title']
+        assert caaj[0]['debit_amount'] == caaj_main_model['debit_amount']
+        assert caaj[0]['debit_from'] == caaj_main_model['debit_from']
+        assert caaj[0]['debit_to'] == caaj_main_model['debit_to']
+        assert caaj[0]['credit_title'] == caaj_main_model['credit_title']
+
+    def test_get_caajs_08(self):
+        file_name = "harvest_cake_bnb"
+        file_header = open("test/testdata/header.json",
+                           "r", encoding="utf-8")
+        header = json.load(file_header)
+        file_header.close()
+
+        file_receipt = open("test/testdata/transaction_receipt/" + file_name + ".json",
+                            "r", encoding="utf-8")
+        receipt = json.load(file_receipt)
+        file_receipt.close()
+        transaction = BscTransaction(
+            header['hash'], receipt, header['timeStamp'], header['gasUsed'], header['gasPrice'])
+        caaj = PancakePlugin.get_caajs(transaction)
+        caaj_main_model = {
+            "time": "2021-12-28 01:28:52",
+            "platform": "bnb_pancakeswap",
+            "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
+            "debit_title": "SPOT",
+            "debit_amount": {"0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82": "0.013002837223798937"},
+            "debit_from": "0x009cF7bC57584b7998236eff51b98A168DceA9B0",
+            "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_title": "STAKINGREWARD",
+            "credit_amount":  {"0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82":
+                               "0.013002837223798937"},
+            "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_to": "0x009cF7bC57584b7998236eff51b98A168DceA9B0",
+            "comment": "pancakeswap stake"
+        }
+        assert caaj[0]['debit_title'] == caaj_main_model['debit_title']
+        assert caaj[0]['debit_amount'] == caaj_main_model['debit_amount']
+        assert caaj[0]['debit_from'] == caaj_main_model['debit_from']
+        assert caaj[0]['debit_to'] == caaj_main_model['debit_to']
+        assert caaj[0]['credit_title'] == caaj_main_model['credit_title']
 
 
 if __name__ == '__main__':
