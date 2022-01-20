@@ -5,7 +5,7 @@ from os.path import basename
 
 setup(
     name='pancake_plugin',
-    version='0.0.1',
+    version='0.0.3',
     license='mit',
     description='plugin for pancake',
 
