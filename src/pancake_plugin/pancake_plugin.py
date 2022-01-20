@@ -314,7 +314,7 @@ class PancakePlugin(CaajPlugin):
             caaj_main.update(caaj_common)
             return caaj_main
 
-    @ classmethod
+    @classmethod
     def __get_caaj_common(cls, transaction):
         caaj_common = {
             "time": transaction.get_timestamp(),

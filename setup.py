@@ -12,7 +12,6 @@ setup(
     author='ca3-caaip',
     url='https://github.com/ca3-caaip/ca3-caaip',
 
-    install_requires=['senkalib'],
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')]    
