@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 from glob import glob
+from os.path import splitext
+from os.path import basename
 
 setup(
     name='pancake_plugin',
