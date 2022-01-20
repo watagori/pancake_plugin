@@ -18,6 +18,7 @@ $ docker-compose down
 
 $ docker-compose down --rmi all --volumes --remove-orphans
 
-## pytest
+## for test
 
+$ pip install -e .[test]
 $ pytest --cov=src --cov-branch --cov-report=term-missing -vv

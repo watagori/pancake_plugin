@@ -1,7 +1,7 @@
 import unittest
 import json
 from senkalib.chain.bsc.bsc_transaction import BscTransaction
-from src.pancake_plugin import PancakePlugin
+from src.pancake_plugin.pancake_plugin import PancakePlugin
 
 
 class TestPancakePlugin(unittest.TestCase):
