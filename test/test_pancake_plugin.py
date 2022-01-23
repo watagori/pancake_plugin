@@ -1,8 +1,8 @@
 import unittest
 import json
 from senkalib.chain.bsc.bsc_transaction import BscTransaction
-from src.pancake_plugin.pancake_plugin import PancakePlugin
-
+from pancake_plugin.pancake_plugin import PancakePlugin
+from hexbytes import HexBytes
 
 class TestPancakePlugin(unittest.TestCase):
     def test_can_handle_00(self):
@@ -209,6 +209,7 @@ class TestPancakePlugin(unittest.TestCase):
             "credit_to": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
             "comment": "pancakeswap unstake"
         }
+        print(caaj)
         assert caaj[0]['debit_title'] == caaj_main_model['debit_title']
         assert caaj[0]['debit_amount'] == caaj_main_model['debit_amount']
         assert caaj[0]['debit_from'] == caaj_main_model['debit_from']
@@ -288,15 +289,18 @@ class TestPancakePlugin(unittest.TestCase):
 
 
     def get_bsc_transaction(self, header_filename, receipt_filename):
-        file_name = "harvest_cake_bnb"
-        file_header = open("test/testdata/%s.json" % header_filename,
+        file_header = open(f"test/testdata/{header_filename}.json",
                            "r", encoding="utf-8")
         header = json.load(file_header)
         file_header.close()
 
-        file_receipt = open("test/testdata/transaction_receipt/%s.json" % receipt_filename,
+        file_receipt = open(f"test/testdata/transaction_receipt/{receipt_filename}.json",
                             "r", encoding="utf-8")
         receipt = json.load(file_receipt)
+        for i_logs, log in enumerate(receipt['logs']):
+            for i_topics, topic in enumerate(log['topics']):
+                receipt['logs'][i_logs]['topics'][i_topics] = HexBytes(topic)
+            pass
         file_receipt.close()
 
         transaction = BscTransaction(

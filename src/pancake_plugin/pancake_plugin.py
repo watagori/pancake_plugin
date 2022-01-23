@@ -50,7 +50,7 @@ class PancakePlugin(CaajPlugin):
     @classmethod
     def get_caajs(cls, transaction) -> CaajJournal:
         topics = list(
-            map(lambda log: log['topics'][0], transaction.transaction_receipt['logs']))
+            map(lambda log: log['topics'][0].hex().lower(), transaction.transaction_receipt['logs']))
         if transaction.transaction_receipt['status'] == 1:
             if transaction.transaction_receipt['to'] == PANCAKESWAP_ADDRESS_TRADE:
 
@@ -119,8 +119,8 @@ class PancakePlugin(CaajPlugin):
         if WETH_DEPOSIT_TOPIC in topics:
             credit_log_index = topics.index(WETH_DEPOSIT_TOPIC)
             debit_log = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][2][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][2].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[-1]
             caaj_main = {
@@ -141,8 +141,8 @@ class PancakePlugin(CaajPlugin):
         elif WETH_WITHDRAWAL_TOPIC in topics:
             debit_log_index = topics.index(WETH_WITHDRAWAL_TOPIC)
             credit_log = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][1][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][1].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[0]
             caaj_main = {
@@ -162,12 +162,12 @@ class PancakePlugin(CaajPlugin):
             caaj_main.update(caaj_common)
             return caaj_main
         else:
-            credit_log = list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                                     and "0x" + log['topics'][1][26:] ==
-                                     transaction.transaction_receipt['from']
-                                     .lower(), transaction.transaction_receipt['logs']))[0]
-            debit_log = list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                                    and "0x" + log['topics'][2][26:] ==
+            credit_log = list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                                    and f"0x{log['topics'][1].hex().lower()[26:]}" ==
+                                    transaction.transaction_receipt['from']
+                                    .lower(), transaction.transaction_receipt['logs']))[0]
+            debit_log = list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                                    and f"0x{log['topics'][2].hex().lower()[26:]}" ==
                                     transaction.transaction_receipt['from']
                                     .lower(), transaction.transaction_receipt['logs']))[-1]
             caaj_main = {
@@ -194,13 +194,13 @@ class PancakePlugin(CaajPlugin):
             # incluede bnb
             credit_log_index_1 = topics.index(WETH_DEPOSIT_TOPIC)
             credit_log_2 = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][1][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][1].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[0]
             debit_log = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][2][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][2].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[-1]
             caaj_main = {
@@ -224,13 +224,13 @@ class PancakePlugin(CaajPlugin):
             return caaj_main
 
         else:
-            credit_log = list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                                     and "0x" + log['topics'][1][26:] ==
+            credit_log = list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                                     and "0x" + log['topics'][1].hex().lower()[26:] ==
                                      transaction.transaction_receipt['from']
                                      .lower(), transaction.transaction_receipt['logs']))
             debit_log = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][2][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][2].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[-1]
             caaj_main = {
@@ -258,14 +258,14 @@ class PancakePlugin(CaajPlugin):
         if WETH_WITHDRAWAL_TOPIC in topics:
             debit_log_1_index = topics.index(WETH_WITHDRAWAL_TOPIC)
             debit_log_2 = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][2][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][2].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[-1]
 
             credit_log = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][1][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][1].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[0]
             caaj_main = {
@@ -287,13 +287,13 @@ class PancakePlugin(CaajPlugin):
             return caaj_main
         else:
             debit_log = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][2][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][2].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))
             credit_log = \
-                list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                            and "0x" + log['topics'][1][26:] ==
+                list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                            and "0x" + log['topics'][1].hex().lower()[26:] ==
                             transaction.transaction_receipt['from'].lower(),
                             transaction.transaction_receipt['logs']))[0]
             caaj_main = {
@@ -333,10 +333,10 @@ class PancakePlugin(CaajPlugin):
         caaj_common = PancakePlugin.__get_caaj_common(transaction)
 
         debit_log = \
-            list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                        and "0x" + log['topics'][2][26:] ==
+            list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                        and "0x" + log['topics'][2].hex().lower()[26:] ==
                         transaction.transaction_receipt['from'].lower()
-                        and "0x" + log['topics'][1][26:] ==
+                        and "0x" + log['topics'][1].hex().lower()[26:] ==
                         transaction.transaction_receipt['to'].lower(),
                         transaction.transaction_receipt['logs']))[0]
         caaj_main = {
@@ -358,10 +358,10 @@ class PancakePlugin(CaajPlugin):
     @classmethod
     def __get_caaj_farms_reward(cls, transaction):
         debit_log_reward = \
-            list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                        and "0x" + log['topics'][2][26:] ==
+            list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                        and "0x" + log['topics'][2].hex().lower()[26:] ==
                         transaction.transaction_receipt['from'].lower()
-                        and "0x" + log['topics'][1][26:] ==
+                        and "0x" + log['topics'][1].hex().lower()[26:] ==
                         SYRUP_CONTRACT_ADDRESS.lower(),
                         transaction.transaction_receipt['logs']))[0]
 
@@ -392,10 +392,10 @@ class PancakePlugin(CaajPlugin):
         caaj_common = PancakePlugin.__get_caaj_common(transaction)
 
         debit_log = \
-            list(filter(lambda log: log['topics'][0] == ERC20_TRANSFER_TOPIC
-                        and "0x" + log['topics'][1][26:] ==
+            list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
+                        and "0x" + log['topics'][1].hex().lower()[26:] ==
                         transaction.transaction_receipt['from'].lower()
-                        and "0x" + log['topics'][2][26:] ==
+                        and "0x" + log['topics'][2].hex().lower()[26:] ==
                         transaction.transaction_receipt['to'].lower(),
                         transaction.transaction_receipt['logs']))
         if len(debit_log) == 0:
