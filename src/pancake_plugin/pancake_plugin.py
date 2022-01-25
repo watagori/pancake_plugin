@@ -372,7 +372,11 @@ class PancakePlugin(CaajPlugin):
                         and "0x" + log['topics'][1].hex().lower()[26:] ==
                         SYRUP_CONTRACT_ADDRESS.lower(),
                         transaction.transaction_receipt['logs']))[0]
-        if len(debit_log_reward)  1:
+<<<<<<< HEAD
+        if len(debit_log_reward) ==  1:
+=======
+        if len(debit_log_reward) == 1:
+>>>>>>> 2e437126f2fb0b863046755042e9c965b8621ca4
             pass
         else:
 
