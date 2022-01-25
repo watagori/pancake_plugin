@@ -98,7 +98,12 @@ class PancakePlugin(CaajPlugin):
                         transaction)
                     caaj_fee = PancakePlugin.__get_caaj_fee(
                         transaction, "pancakeswap transaction fee")
-                    return [caaj_main, caaj_fee]
+                    caaj = []
+                    if caaj_main:
+                        caaj.append(caaj_main)
+                    
+                    caaj.append(caaj_fee)
+                    return caaj
 
     @classmethod
     def __get_caaj_fee(cls, transaction, comment):
@@ -371,13 +376,11 @@ class PancakePlugin(CaajPlugin):
                         transaction.transaction_receipt['from'].lower()
                         and "0x" + log['topics'][1].hex().lower()[26:] ==
                         SYRUP_CONTRACT_ADDRESS.lower(),
-                        transaction.transaction_receipt['logs']))[0]
-<<<<<<< HEAD
-        if len(debit_log_reward) ==  1:
-=======
-        if len(debit_log_reward) == 1:
->>>>>>> 2e437126f2fb0b863046755042e9c965b8621ca4
-            pass
+                        transaction.transaction_receipt['logs']))
+
+
+        if len(debit_log_reward) == 0:
+            print("length = 0")
         else:
 
             caaj_reward = {
@@ -387,13 +390,13 @@ class PancakePlugin(CaajPlugin):
                 "debit_title": "SPOT",
                 "debit_from": SYRUP_CONTRACT_ADDRESS,
                 "debit_to": transaction.transaction_receipt['from'],
-                "debit_amount": {debit_log_reward['address']:
-                                str(Decimal(int(debit_log_reward['data'], 16))
+                "debit_amount": {debit_log_reward[0]['address']:
+                                str(Decimal(int(debit_log_reward[0]['data'], 16))
                                     / Decimal(WEI))
                                 },
                 "credit_title": "STAKINGREWARD",
-                "credit_amount": {debit_log_reward['address']:
-                                str(Decimal(int(debit_log_reward['data'], 16))
+                "credit_amount": {debit_log_reward[0]['address']:
+                                str(Decimal(int(debit_log_reward[0]['data'], 16))
                                     / Decimal(WEI))
                                 },
                 "credit_from":  transaction.transaction_receipt['from'],
