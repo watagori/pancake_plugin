@@ -393,6 +393,7 @@ class PancakePlugin(CaajPlugin):
             "credit_to": SYRUP_CONTRACT_ADDRESS,
             "comment": "pancakeswap reward"
         }
+        print(f"{transaction.get_timestamp()} is ok")
         return caaj_reward
 
     @classmethod
