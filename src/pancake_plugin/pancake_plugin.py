@@ -99,7 +99,7 @@ class PancakePlugin(CaajPlugin):
             "time": transaction.get_timestamp(),
             "platform": cls.PLATFORM,
             "transaction_id": transaction.transaction_receipt['transactionHash'],
-            "debit_title": "SPOT",
+            "debit_title": "FEE",
             "debit_from": "0x0000000000000000000000000000000000000000",
             "debit_to": transaction.transaction_receipt['from'],
             "debit_amount": {cls.CHAIN_CONTRACT: str(Decimal(transaction.get_transaction_fee())
@@ -340,12 +340,12 @@ class PancakePlugin(CaajPlugin):
                         transaction.transaction_receipt['to'].lower(),
                         transaction.transaction_receipt['logs']))[0]
         caaj_main = {
-            "debit_title": "SPOT",
+            "debit_title": "LIQUIDITY",
             "debit_amount": {debit_log['address']:
                              str(Decimal(int(debit_log['data'], 16))
                                  / Decimal(WEI))
                              },
-            "credit_title": "STAKINGREWARD",
+            "credit_title": "UNSTAKE",
             "credit_amount": {debit_log['address']:
                               str(Decimal(int(debit_log['data'], 16))
                                   / Decimal(WEI))
@@ -405,12 +405,12 @@ class PancakePlugin(CaajPlugin):
         else:
             # stake
             caaj_main = {
-                "debit_title": "SPOT",
+                "debit_title": "STAKING",
                 "debit_amount": {debit_log[0]['address']:
                                  str(Decimal(int(debit_log[0]['data'], 16))
                                  / Decimal(WEI))
                                  },
-                "credit_title": "STAKING",
+                "credit_title": "LIQUIDITY",
                 "credit_amount": {debit_log[0]['address']:
                                   str(Decimal(int(debit_log[0]['data'], 16))
                                   / Decimal(WEI))
