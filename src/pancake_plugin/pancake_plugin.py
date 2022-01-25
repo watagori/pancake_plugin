@@ -364,6 +364,7 @@ class PancakePlugin(CaajPlugin):
 
     @classmethod
     def __get_caaj_farms_reward(cls, transaction):
+        print(transaction.get_timestamp())
         debit_log_reward = \
             list(filter(lambda log: log['topics'][0].hex().lower() == ERC20_TRANSFER_TOPIC
                         and "0x" + log['topics'][2].hex().lower()[26:] ==
