@@ -41,9 +41,16 @@ class PancakePlugin(CaajPlugin):
 
     @classmethod
     def can_handle(cls, transaction) -> bool:
+        topics = list(
+            map(lambda log: log['topics'][0].hex().lower(), transaction.transaction_receipt['logs']))
+        
         swap_type = transaction.transaction_receipt['to']
         if swap_type in PANCAKESWAP_ADDRESS:
-            return True
+            if ERC20_APPROVE_TOPIC in topics and len(transaction.transaction_receipt['logs']) == 1:
+                return False
+            else:
+                return True
+        
         else:
             return False
 
