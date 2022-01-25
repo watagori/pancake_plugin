@@ -36,7 +36,7 @@ class TestPancakePlugin(unittest.TestCase):
             "time": "2021-12-28 01:28:52",
             "platform": "bnb_pancakeswap",
             "transaction_id": "0x4f8534e85849cb54f0ae4ca0718939ab22de248f64e2e4dc607a76b12f20f109",
-            "debit_title": "SPOT",
+            "debit_title": "FEE",
             "debit_amount": {"BNB": "0.00067182"},
             "debit_from": "0x0000000000000000000000000000000000000000",
             "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
@@ -198,18 +198,17 @@ class TestPancakePlugin(unittest.TestCase):
             "time": "2021-12-28 01:28:52",
             "platform": "bnb_pancakeswap",
             "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
-            "debit_title": "SPOT",
+            "debit_title": "LIQUIDITY",
             "debit_amount": {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0": "0.291597195540468368"},
             "debit_from": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
             "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
-            "credit_title": "STAKIN",
+            "credit_title": "UNSTAKING",
             "credit_amount":  {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0":
                                "0.291597195540468368"},
             "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
             "credit_to": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
             "comment": "pancakeswap unstake"
         }
-        print(caaj)
         assert caaj[0]['debit_title'] == caaj_main_model['debit_title']
         assert caaj[0]['debit_amount'] == caaj_main_model['debit_amount']
         assert caaj[0]['debit_from'] == caaj_main_model['debit_from']
@@ -246,11 +245,11 @@ class TestPancakePlugin(unittest.TestCase):
             "time": "2021-12-28 01:28:52",
             "platform": "bnb_pancakeswap",
             "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
-            "debit_title": "SPOT",
+            "debit_title": "STAKING",
             "debit_amount": {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0": "0.291597195540468368"},
             "debit_from": "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
             "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
-            "credit_title": "STAKING",
+            "credit_title": "LIQUIDITY",
             "credit_amount":  {"0x0eD7e52944161450477ee417DE9Cd3a859b14fD0":
                                "0.291597195540468368"},
             "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
@@ -286,6 +285,34 @@ class TestPancakePlugin(unittest.TestCase):
         assert caaj[0]['debit_from'] == caaj_main_model['debit_from']
         assert caaj[0]['debit_to'] == caaj_main_model['debit_to']
         assert caaj[0]['credit_title'] == caaj_main_model['credit_title']
+
+
+    def test_get_caajs_senka_deposit(self):
+        transaction = self.get_bsc_transaction('header', 'senka_deposit')
+        caaj = PancakePlugin.get_caajs(transaction)
+        caaj_main_model = {
+            "time": "2021-12-28 01:28:52",
+            "platform": "bnb_pancakeswap",
+            "transaction_id": "0x0ccda1b34404e55bd211144b7d024f03c47bdc1fd8a47396271ffe1f63a8c0cb",
+            "debit_title": "SPOT",
+            "debit_amount": {"0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82": "0.013002837223798937"},
+            "debit_from": "0x009cF7bC57584b7998236eff51b98A168DceA9B0",
+            "debit_to": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_title": "STAKINGREWARD",
+            "credit_amount":  {"0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82":
+                               "0.013002837223798937"},
+            "credit_from": "0xDa28ecfc40181a6DAD8b52723035DFba3386d26E",
+            "credit_to": "0x009cF7bC57584b7998236eff51b98A168DceA9B0",
+            "comment": "pancakeswap stake"
+        }
+        assert caaj[0]['debit_title'] == caaj_main_model['debit_title']
+        assert caaj[0]['debit_amount'] == caaj_main_model['debit_amount']
+        assert caaj[0]['debit_from'] == caaj_main_model['debit_from']
+        assert caaj[0]['debit_to'] == caaj_main_model['debit_to']
+        assert caaj[0]['credit_title'] == caaj_main_model['credit_title']
+
+
+
 
 
     def get_bsc_transaction(self, header_filename, receipt_filename):

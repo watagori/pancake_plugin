@@ -372,29 +372,32 @@ class PancakePlugin(CaajPlugin):
                         and "0x" + log['topics'][1].hex().lower()[26:] ==
                         SYRUP_CONTRACT_ADDRESS.lower(),
                         transaction.transaction_receipt['logs']))[0]
+        if len(debit_log_reward)  1:
+            pass
+        else:
 
-        caaj_reward = {
-            "time": transaction.get_timestamp(),
-            "platform": cls.PLATFORM,
-            "transaction_id": transaction.transaction_receipt['transactionHash'],
-            "debit_title": "SPOT",
-            "debit_from": SYRUP_CONTRACT_ADDRESS,
-            "debit_to": transaction.transaction_receipt['from'],
-            "debit_amount": {debit_log_reward['address']:
-                             str(Decimal(int(debit_log_reward['data'], 16))
-                                 / Decimal(WEI))
-                             },
-            "credit_title": "STAKINGREWARD",
-            "credit_amount": {debit_log_reward['address']:
-                              str(Decimal(int(debit_log_reward['data'], 16))
-                                  / Decimal(WEI))
-                              },
-            "credit_from":  transaction.transaction_receipt['from'],
-            "credit_to": SYRUP_CONTRACT_ADDRESS,
-            "comment": "pancakeswap reward"
-        }
-        print(f"{transaction.get_timestamp()} is ok")
-        return caaj_reward
+            caaj_reward = {
+                "time": transaction.get_timestamp(),
+                "platform": cls.PLATFORM,
+                "transaction_id": transaction.transaction_receipt['transactionHash'],
+                "debit_title": "SPOT",
+                "debit_from": SYRUP_CONTRACT_ADDRESS,
+                "debit_to": transaction.transaction_receipt['from'],
+                "debit_amount": {debit_log_reward['address']:
+                                str(Decimal(int(debit_log_reward['data'], 16))
+                                    / Decimal(WEI))
+                                },
+                "credit_title": "STAKINGREWARD",
+                "credit_amount": {debit_log_reward['address']:
+                                str(Decimal(int(debit_log_reward['data'], 16))
+                                    / Decimal(WEI))
+                                },
+                "credit_from":  transaction.transaction_receipt['from'],
+                "credit_to": SYRUP_CONTRACT_ADDRESS,
+                "comment": "pancakeswap reward"
+            }
+            print(f"{transaction.get_timestamp()} is ok")
+            return caaj_reward
 
     @classmethod
     def __get_caaj_farms_stake(cls, transaction):
